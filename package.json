@@ -2,6 +2,9 @@
   "name": "nekotools",
   "displayName": "NekoTools",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nekoycode/vscode.extensions.nekotool"},
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.102.0"
