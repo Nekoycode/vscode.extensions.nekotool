@@ -1,0 +1,201 @@
+{
+  "name": "nekotools",
+  "displayName": "NekoTools",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.102.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "nekotools.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "command": "nekotools.getCurrentFilePath",
+        "title": "📄 获取文件/文件夹路径"
+      },
+      {
+        "command": "nekotools.openInExternalTerminal",
+        "title": "🖥️ 在外部终端中打开"
+      },
+      {
+        "command": "nekotools.refreshSettings",
+        "title": "刷新设置",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "nekotools.toggleFeature",
+        "title": "切换功能状态"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "nekotools.getCurrentFilePath",
+          "when": "editorFocus && config.nekotools.features.getPathEnabled",
+          "group": "navigation"
+        },
+        {
+          "command": "nekotools.openInExternalTerminal",
+          "when": "editorFocus && config.nekotools.features.openTerminalEnabled",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "nekotools.getCurrentFilePath",
+          "when": "config.nekotools.features.getPathEnabled",
+          "group": "navigation"
+        },
+        {
+          "command": "nekotools.openInExternalTerminal",
+          "when": "config.nekotools.features.openTerminalEnabled",
+          "group": "navigation"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "nekotools.getCurrentFilePath",
+          "when": "config.nekotools.features.getPathEnabled",
+          "group": "navigation"
+        },
+        {
+          "command": "nekotools.openInExternalTerminal",
+          "when": "config.nekotools.features.openTerminalEnabled",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "nekotools.getCurrentFilePath",
+          "when": "config.nekotools.features.getPathEnabled"
+        },
+        {
+          "command": "nekotools.openInExternalTerminal",
+          "when": "config.nekotools.features.openTerminalEnabled"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "nekotools.refreshSettings",
+          "when": "view == nekotools-settings",
+          "group": "navigation"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "nekotools",
+          "title": "NekoTools",
+          "icon": "./images/blue_cat.svg"
+        }
+      ]
+    },
+    "views": {
+      "nekotools": [
+        {
+          "id": "nekotools-settings",
+          "name": "设置",
+          "when": "true"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "nekotools-settings",
+        "contents": "欢迎使用 NekoTools！\n[打开设置](command:workbench.action.openSettings?%5B%22nekotools%22%5D)\n[刷新](command:nekotools.refreshSettings)"
+      }
+    ],
+    "configuration": {
+      "title": "NekoTools",
+      "properties": {
+        "nekotools.terminal.windows": {
+          "type": "string",
+          "enum": [
+            "wt",
+            "cmd",
+            "powershell"
+          ],
+          "enumDescriptions": [
+            "Windows Terminal (推荐)",
+            "命令提示符 (cmd)",
+            "PowerShell"
+          ],
+          "default": "wt",
+          "description": "Windows平台使用的终端类型"
+        },
+        "nekotools.terminal.linux": {
+          "type": "string",
+          "enum": [
+            "gnome-terminal",
+            "xterm",
+            "konsole",
+            "custom"
+          ],
+          "enumDescriptions": [
+            "GNOME Terminal",
+            "XTerm",
+            "Konsole (KDE)",
+            "自定义命令"
+          ],
+          "default": "gnome-terminal",
+          "description": "Linux平台使用的终端类型"
+        },
+        "nekotools.terminal.customCommand": {
+          "type": "string",
+          "default": "",
+          "description": "自定义终端命令 (当选择custom时使用，使用 {path} 作为路径占位符)"
+        },
+        "nekotools.path.showIcons": {
+          "type": "boolean",
+          "default": true,
+          "description": "在路径显示中显示文件/文件夹图标"
+        },
+        "nekotools.path.autoClipboard": {
+          "type": "boolean",
+          "default": false,
+          "description": "获取路径时自动复制到剪贴板（无需点击复制按钮）"
+        },
+        "nekotools.features.getPathEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "启用获取文件路径功能"
+        },
+        "nekotools.features.openTerminalEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "启用在外部终端中打开功能"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.102.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
